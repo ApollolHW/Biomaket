@@ -1,0 +1,68 @@
+Visão geral: fio de pisca-pisca com 8 LEDs amarelos
+
+Objetivo: um fio com 8 LEDs amarelos que acendem em sequência, da direita pra esquerda, em loop, sem protoboard.
+
+Como funciona: o Arduino liga um LED de cada vez, com um pino para cada um. Como cada LED é controlado separadamente, não dá pra ligá-los em série como na sua foto, senão todos acenderiam juntos.
+
+
+
+
+Material
+
+Arduino Uno/Nano (alimentado por USB ou power bank)
+8 LEDs amarelos
+8 resistores de 220 Ω
+Cabo flat ou 9 fios finos (8 sinais + 1 GND)
+Solda e termo-retrátil
+
+Ligação
+
+Pino 2 ──[220Ω]──►|──┐   LED 1 (direita)
+Pino 3 ──[220Ω]──►|──┤   LED 2
+Pino 4 ──[220Ω]──►|──┤   LED 3
+Pino 5 ──[220Ω]──►|──┤   LED 4
+Pino 6 ──[220Ω]──►|──┤   LED 5
+Pino 7 ──[220Ω]──►|──┤   LED 6
+Pino 8 ──[220Ω]──►|──┤   LED 7
+Pino 9 ──[220Ω]──►|──┤   LED 8 (esquerda)
+                     └── GND (fio comum)
+
+O resistor liga no ânodo (perna maior), e o cátodo (perna menor) vai no GND comum.
+
+Montagem física (sem protoboard)
+
+Solde cada resistor na perna de um LED.
+Solde um fio de sinal em cada resistor e o fio de GND comum em todos os cátodos.
+Isole as soldas com termo-retrátil.
+Junte os fios (cabo flat ou fios torcidos) pra formar o “fio”.
+Teste tudo com jumpers antes de soldar.
+
+Código
+"cpp
+const int leds[] = {2, 3, 4, 5, 6, 7, 8, 9};  // da direita pra esquerda
+const int total = 8;
+const int tempo = 120;  // ms entre cada LED
+
+void setup() {
+  for (int i = 0; i < total; i++) pinMode(leds[i], OUTPUT);
+}
+
+void loop() {
+  for (int i = 0; i < total; i++) {
+    digitalWrite(leds[i], HIGH);
+    delay(tempo);
+    digitalWrite(leds[i], LOW);
+  }
+}
+"
+
+
+
+
+Pontos de atenção
+
+Tensão: LED amarelo precisa de ≈ 2 V, então os 5 V do Arduino bastam, com 220 Ω dá uns 10 a 15 mA por LED.
+Corrente: com um LED aceso por vez não tem problema. Se acender todos juntos (≈ 100 mA no total), ainda fica dentro do limite do Uno, mas confira os 20 mA por pino.
+Polaridade: perna maior no resistor/pino e perna menor no GND.
+Curto: não deixe pernas ou soldas se tocarem.
+Ajuste: mude tempo pra deixar a sequência mais rápida ou lent
